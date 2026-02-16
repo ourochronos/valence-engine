@@ -94,10 +94,13 @@ deterministic-core ←→ merge-model        (clustering is deterministic)
 
 ## Emergent Dimensions Cluster
 ```
-emergent-dimensions ←→ multi-dim-fusion  (extends dimensions of)
-emergent-dimensions ←→ emergent-ontology (dimensions emerge like ontology)
-emergent-dimensions ←→ stigmergy         (use creates dimensions)
-emergent-dimensions ←→ epistemics-native (dimensional space is epistemic)
+emergent-dimensions ←→ multi-dim-fusion     (extends dimensions of)
+emergent-dimensions ←→ emergent-ontology    (dimensions emerge like ontology)
+emergent-dimensions ←→ stigmergy            (use creates dimensions)
+emergent-dimensions ←→ epistemics-native    (dimensional space is epistemic)
+emergent-dimensions ←→ topology-embeddings  (computed from topology)
+emergent-dimensions ←→ graph-vector-duality (topology IS dimensional space)
+emergent-dimensions ←→ three-layer-architecture (confidence from source topology)
 ```
 
 ## Curation Cluster

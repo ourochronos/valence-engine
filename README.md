@@ -20,7 +20,7 @@ Instead of growing conversation history → compaction → loss, each inference 
 
 1. **Triples as Atoms**: Knowledge decomposes to `(subject, relationship, object)` — not beliefs, not claims. Everything is triples: facts, taxonomy, provenance, confidence. The graph is self-describing.
 
-2. **Three-Layer Architecture**: Triples (atomic facts) → Sources (provenance, never merged) → Summaries (recomposable views). Not three tables — three scales of one graph. Dedup at L1, preserve provenance at L2, retrieve from L3.
+2. **Three-Layer Architecture**: Triples (atomic facts) → Sources (provenance, never merged) → Summaries (LLM rendering at read boundary). Not three tables — TWO stored layers (triples + sources) plus on-demand rendering. Dedup at L1, preserve provenance at L2, render at L3. Summaries never hit storage.
 
 3. **Topology-Derived Embeddings**: Vector embeddings generated from graph structure alone (spectral, random walks, message passing). No external model. No API dependency. Embeddings refine as graph grows.
 
@@ -40,6 +40,8 @@ Instead of growing conversation history → compaction → loss, each inference 
 
 11. **Stigmergy + Progressive Summarization**: Structure emerges from use. Organization is continuous, proportional to value, and focused where it matters most.
 
+12. **Dynamic Confidence**: Confidence dimensions are not stored metadata — they are computed from graph topology at query time. Source reliability, corroboration, temporal freshness, internal consistency, domain applicability — all emerge from structural analysis. Confidence is contextual: same triple can be high-confidence in one query context, low in another.
+
 ## Structure
 
 ```
@@ -57,9 +59,9 @@ graph/
 ## Status
 
 **Phase**: Design evolution — major breakthrough Feb 15 2026  
-**Confidence**: Core architecture settled (triples, topology embeddings, knowledge loop), implementation details exploring  
+**Confidence**: Core architecture settled (triples, topology embeddings, knowledge loop, dynamic confidence), implementation details exploring  
 **Origin**: Conversations between Chris Jacobs and Claude, Feb 2026  
-**Latest**: Feb 15 2026 — triples as atoms, three-layer architecture, topology-derived embeddings, graph-vector duality, complete self-reinforcing loop
+**Latest**: Feb 15 2026 (v3) — Two-layer storage architecture (triples + sources, summaries are rendering not storage), dynamic confidence from topology (computed at query time, not stored metadata), complete self-reinforcing loop
 
 ## The Problem This Solves
 
@@ -73,10 +75,10 @@ graph/
 **The three-layer architecture fixes this**:
 - All observations decompose to ~4 unique triples (dedup at L1)
 - Each triple has 3-5 independent sources (corroboration at L2)
-- Retrieval returns 1-2 clean summaries (presentation at L3)
-- Confidence aggregates from source diversity, not single observation
+- Retrieval returns 1-2 clean summaries (LLM rendering at L3, never stored)
+- Confidence computed from graph topology at query time: source diversity, paths, recency, neighborhood structure
 
-Clean. Consolidated. Honest.
+Two layers stored (triples + sources). One layer rendered (summaries). Clean. Consolidated. Honest.
 
 ## Lineage
 

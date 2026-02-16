@@ -2,7 +2,7 @@
 
 **Status**: settled  
 **Confidence**: 0.95  
-**Connections**: [multi-dim-fusion], [knowledge-lifecycle], [federation], [pekb]
+**Connections**: [multi-dim-fusion], [knowledge-lifecycle], [federation], [pekb], [emergent-dimensions], [three-layer-architecture]
 
 ## Idea
 
@@ -14,11 +14,16 @@ A belief with 0.95 confidence that's been corroborated by three independent sour
 
 ## Epistemic Primitives
 
-- **Belief**: A statement with dimensional confidence (source reliability, temporal validity, corroboration count)
-- **Tension**: An explicit contradiction between two beliefs
-- **Supersession**: A belief replacing an older belief, with reasoning chain preserved
-- **Corroboration**: Independent confirmation from different sources
-- **Provenance**: Where a belief came from (which ingestion events, which sessions, which tool results)
+- **Triple**: Atomic fact `(subject, relationship, object)` — the fundamental unit (see [triples-atomic])
+- **Source**: Provenance record linking a triple to where it came from (see [three-layer-architecture])
+- **Confidence**: NOT stored metadata — computed from graph topology at query time (see [emergent-dimensions])
+  - Source reliability = independent, well-connected sources
+  - Corroboration = independent reasoning paths to the same triple
+  - Temporal freshness = recency-weighted decay
+  - Internal consistency = absence of contradicting triples in local neighborhood
+  - Domain applicability = centrality within query-relevant subgraph
+- **Tension**: An explicit contradiction between two triples
+- **Supersession**: A triple replacing an older triple, with reasoning chain preserved via sources
 
 ## Relationship to PEKBs
 

@@ -31,7 +31,7 @@ All concept documents, their status, and confidence.
 | graph-vector-duality | settled | 0.95 | concepts/graph-vector-duality.md |
 | knowledge-loop | settled | 0.95 | concepts/knowledge-loop.md |
 | deterministic-core | exploring | 0.85 | concepts/deterministic-core.md |
-| emergent-dimensions | exploring | 0.75 | concepts/emergent-dimensions.md |
+| emergent-dimensions | settled | 0.90 | concepts/emergent-dimensions.md |
 | curation | exploring | 0.75 | concepts/curation.md |
 | merge-model | exploring | 0.80 | concepts/merge-model.md |
 

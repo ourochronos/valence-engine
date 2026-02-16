@@ -6,13 +6,13 @@
 
 ## Idea
 
-The knowledge graph has three scales, not three separate systems:
+The knowledge graph has three conceptual layers, but only TWO are stored:
 
-1. **Layer 1: Triples** — Atomic facts. `(subject, relationship, object)`
-2. **Layer 2: Sources** — Provenance records. Which triples came from where, with FK links
-3. **Layer 3: Summaries** — Recomposed clusters of triples for human/LLM consumption
+1. **Layer 1: Triples** — Atomic facts. `(subject, relationship, object)` — **STORED**
+2. **Layer 2: Sources** — Provenance records. Which triples came from where, with FK links — **STORED**
+3. **Layer 3: Summaries** — Recomposed clusters of triples for human/LLM consumption — **RENDERED, NOT STORED**
 
-This isn't three tables. It's three views of the same graph.
+This isn't three tables. It's two stored layers (graph + provenance) plus a rendering layer (LLM at read boundary).
 
 ## Layer 1: Triples (The Atoms)
 
@@ -59,25 +59,37 @@ Properties:
 
 ## Layer 3: Summaries (The Recompositions)
 
-Human-readable or LLM-consumable recompositions of triple clusters:
+**CRITICAL: Summaries are NOT stored. They are a rendering produced by inference at the read boundary.**
+
+When you query the system:
+1. Engine returns clusters of triples (based on cosine similarity to query)
+2. LLM at the boundary recomposes those triples into natural language
+3. Summary is generated fresh each time, never hits storage
+
+Example rendering:
 ```
-summary_id: sum_88
-content: "Chris strongly prefers composable architectures 
-          over monolithic designs (observed across 5 sessions, 
-          high confidence)"
-constituent_triples: [t_123, t_124, t_125, t_126, t_127]
-generated_at: 2026-02-15T22:30:00Z
-confidence: 0.92 (aggregated from sources)
+Query: "What are Chris's architecture preferences?"
+
+Triples returned:
+  (Chris, prefers, composable_architectures)
+  (Chris, dislikes, framework_lock_in)
+  (composable_architectures, is_a, design_philosophy)
+
+LLM renders as:
+  "Chris strongly prefers composable architectures over 
+   monolithic designs (observed across 5 sessions, 
+   high confidence: 0.92)"
 ```
 
-Summaries are **disposable and regenerable**. You can delete all summaries and regenerate them from triples + sources at any time.
+Summaries are **disposable by nature** — they don't exist until someone asks, and they vanish after delivery.
 
 Properties:
-- Generated on-demand or cached
+- Generated on-demand at query time (never stored)
+- Rendered by LLM from triple clusters
 - Can be tuned for audience (technical vs casual)
-- Can be scoped (summary of Chris's preferences vs summary of all architecture beliefs)
-- Linked back to constituent triples
-- This is what retrieval returns (not raw triples)
+- Can be scoped by query context
+- No storage cost, no staleness problem
+- Always reflect current graph state
 
 ## How This Fixes the Hygiene Problem
 
@@ -113,9 +125,9 @@ The pyramid is one graph at different resolutions.
 
 - Triples table: ~10-100x more rows than current beliefs (one belief → many triples)
 - Sources table: ~1-5x current beliefs (one observation per source)
-- Summaries table: ~0.1-0.5x current beliefs (summaries consolidate)
+- Summaries: **zero storage** (rendered on-demand, never stored)
 
-Net: more total rows, but better organized, and most retrieval queries only touch summaries.
+Net: more rows in triples/sources, but no summary storage overhead. Clean separation of data (stored) from presentation (rendered).
 
 ## Query Pattern
 
@@ -141,8 +153,8 @@ Summaries for speed. Triples for precision. Sources for provenance.
 
 ## Open Questions
 
-- Should summaries be auto-generated on every triple cluster, or only on-demand?
-- How do we decide summary scope? (per-entity, per-topic, per-session?)
+- How do we decide summary scope at query time? (per-entity, per-topic, per-session?)
 - Can the LLM see raw triples directly, or always through summaries?
-- What's the regeneration cost if we delete all summaries? (acceptable for maintenance?)
-- How do we handle summary versioning when underlying triples change?
+- Should there be a summary cache for expensive queries, or always render fresh?
+- How do we tune summary verbosity based on query context? (terse vs detailed)
+- Can users request "show me the triples" instead of the rendered summary?

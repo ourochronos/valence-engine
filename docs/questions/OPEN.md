@@ -170,9 +170,9 @@ Current Valence has ~800 beliefs. How do we decompose them into triples without 
 **Affects**: [triples-atomic], [context-assembly]  
 How do we present triples to the LLM without overwhelming context? Show raw triples, always use summaries, or adaptive based on query type?
 
-### Q37: Summary regeneration triggers?
+### Q37: Summary caching strategy?
 **Affects**: [three-layer-architecture]  
-When do we regenerate summaries? On every triple update (expensive), on retrieval (lazy), on schedule (batch), or never (summaries are permanent)?
+Summaries are rendered on-demand, but should we cache them? For how long? Or always render fresh? What's the trade-off between computation cost and staleness?
 
 ## Topology Embeddings (NEW - Feb 15, 2026)
 
@@ -239,3 +239,29 @@ How do we decide what triples to cluster into a summary? Per-entity (all facts a
 ### Q52: Provenance depth in summaries?
 **Affects**: [three-layer-architecture]  
 When returning a summary, how much source detail to include? Just count ("5 sources")? Timestamps of observations? Full session links? Configurable by query?
+
+## Dynamic Confidence & Topology
+
+### Q53: Confidence computation caching?
+**Affects**: [emergent-dimensions], [lazy-compute]  
+Confidence dimensions are computed from topology at query time. Should we cache dimension scores for expensive queries, or always compute fresh? How long should cache live?
+
+### Q54: Minimum graph structure for reliable confidence?
+**Affects**: [emergent-dimensions], [knowledge-loop]  
+How sparse can the graph be before topology-based confidence scores become unreliable? 100 triples? 500? Should we fall back to simpler heuristics for sparse graphs?
+
+### Q55: Confidence score blending across dimensions?
+**Affects**: [emergent-dimensions], [multi-dim-fusion]  
+When multiple confidence dimensions are computed (source reliability, corroboration, freshness, etc.), how do we blend them into a single overall score? Fixed weights, context-dependent, learned from feedback?
+
+### Q56: Contradicting triples detection algorithm?
+**Affects**: [emergent-dimensions], [epistemics-native]  
+How do we detect contradicting triples in the local neighborhood to compute internal consistency dimension? Semantic similarity of inverses? Explicit contradiction edges? LLM-based detection?
+
+### Q57: Query-relevant subgraph boundary?
+**Affects**: [emergent-dimensions], [graph-vector-duality]  
+When computing domain applicability (centrality within query-relevant subgraph), how do we define the boundary? k-hops from query nodes? Similarity threshold? PageRank with query as seed?
+
+### Q58: Should confidence dimensions be named at all?
+**Affects**: [emergent-dimensions]  
+If dimensions are purely topological, should we even label them (source reliability, corroboration, etc.) or treat them as unnamed axes? Does naming bias how they're used?
