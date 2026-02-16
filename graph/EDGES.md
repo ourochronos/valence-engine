@@ -55,15 +55,31 @@ privacy-sovereignty ←→ intermediary      (enforced by)
 privacy-sovereignty ←→ knowledge-lifecycle (L0 never shares)
 ```
 
-## Bounded Memory Cluster
+## Core Principles Cluster
 ```
-bounded-memory ←→ decay-model            (decay feeds eviction)
-bounded-memory ←→ stigmergy              (LRU eviction is forgetting)
-bounded-memory ←→ knowledge-lifecycle    (bounds the lifecycle)
-bounded-memory ←→ working-set            (residency competition)
-bounded-memory ←→ deterministic-core     (eviction is deterministic)
-bounded-memory ←→ merge-model            (clustering preserves before eviction)
-bounded-memory ←→ curation               (pins protect from eviction)
+cold-warm-split ←→ graceful-degradation    (enables)
+cold-warm-split ←→ lazy-compute            (deterministic layer)
+cold-warm-split ←→ epistemics-native       (cold engine core)
+inference-training-loop ←→ stigmergy       (use reshapes structure)
+inference-training-loop ←→ lazy-compute    (compute follows use)
+inference-training-loop ←→ knowledge-lifecycle (drives progression)
+value-per-token ←→ lazy-compute            (maximized by)
+value-per-token ←→ context-assembly        (drives design)
+value-per-token ←→ tool-mediation          (extract not accumulate)
+```
+
+## Memory Management Cluster
+```
+bounded-memory ←→ decay-model              (implements via LRU)
+bounded-memory ←→ inference-training-loop  (eviction is forgetting)
+bounded-memory ←→ knowledge-lifecycle      (natural narrowing)
+bounded-memory ←→ stigmergy                (LRU eviction is forgetting)
+bounded-memory ←→ working-set              (residency competition)
+bounded-memory ←→ deterministic-core       (eviction is deterministic)
+bounded-memory ←→ merge-model              (clustering preserves before eviction)
+bounded-memory ←→ curation                 (pins protect from eviction)
+graceful-degradation ←→ privacy-sovereignty (enables offline)
+graceful-degradation ←→ cold-warm-split    (structural property)
 ```
 
 ## Deterministic Core Cluster
@@ -102,6 +118,44 @@ merge-model ←→ lazy-compute              (merge is demand-driven)
 merge-model ←→ knowledge-lifecycle       (L1-L2 consolidation)
 ```
 
+## Atomic Knowledge Cluster (NEW - Feb 15, 2026)
+```
+triples-atomic ←→ three-layer-architecture    (foundation of)
+triples-atomic ←→ emergent-ontology           (ontology built from)
+triples-atomic ←→ epistemics-native           (confidence on)
+three-layer-architecture ←→ progressive-summarization (implements)
+three-layer-architecture ←→ knowledge-lifecycle (structures)
+```
+
+## Topology & Vector Cluster (NEW - Feb 15, 2026)
+```
+topology-embeddings ←→ graph-vector-duality   (enables)
+topology-embeddings ←→ stigmergy              (refines through use)
+topology-embeddings ←→ lazy-compute           (computed on demand)
+graph-vector-duality ←→ multi-dim-fusion      (retrieval via)
+graph-vector-duality ←→ emergent-ontology     (discovers structure)
+```
+
+## Complete Loop Cluster (NEW - Feb 15, 2026)
+```
+knowledge-loop ←→ inference-training-loop     (realizes)
+knowledge-loop ←→ topology-embeddings         (powered by)
+knowledge-loop ←→ graph-vector-duality        (relies on)
+knowledge-loop ←→ triples-atomic              (builds from)
+knowledge-loop ←→ cold-warm-split             (LLM at boundary)
+knowledge-loop ←→ stigmergy                   (self-reinforcing via)
+```
+
+## Integration Edges (NEW connects to EXISTING)
+```
+triples-atomic ←→ knowledge-lifecycle         (lifecycle of)
+triples-atomic ←→ bounded-memory              (dedup at atomic layer)
+three-layer-architecture ←→ context-assembly  (retrieval from L3)
+topology-embeddings ←→ rust-engine            (implemented in)
+graph-vector-duality ←→ federation            (shares triples not vectors)
+knowledge-loop ←→ value-per-token             (maximizes via loop)
+```
+
 ## Key Insight Edges
 ```
 stigmergy + progressive-summarization = "structure emerges from use"
@@ -109,7 +163,15 @@ context-assembly + decay-model = "no more compaction"
 tool-mediation + intent-capture = "tools get smarter over time"
 intermediary = rust-engine = "the engine IS the intermediary"
 deterministic-core + stigmergy = "stigmergy made concrete"
-bounded-memory + decay-model = "forgetting is structural, not cleanup"
+cold-warm-split + graceful-degradation = "inference is optional, not required"
+inference-training-loop + stigmergy = "usage is the training process"
+bounded-memory + decay-model = "eviction is natural forgetting"
 lazy-compute + deterministic-core = "only deterministic bookkeeping, not inference"
 merge-model + progressive-summarization = "clustering IS summarization"
+value-per-token = "the primary optimization metric"
+triples-atomic = "the atomic unit of knowledge"
+three-layer-architecture = "triples → sources → summaries (not three tables, three scales)"
+topology-embeddings = "vectors from graph structure alone, no external model"
+graph-vector-duality = "two projections of one system"
+knowledge-loop = "LLM builds graph → topology generates embeddings → retrieval feeds LLM"
 ```

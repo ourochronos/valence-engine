@@ -61,9 +61,40 @@ The lifecycle is bounded by [bounded-memory]. L0 data that never promotes eventu
 
 Merge/clustering ([merge-model]) is how L1-L2 beliefs consolidate without inference. Co-retrieved beliefs cluster together, the most-used member becomes the representative, and individual members that stop being retrieved get evicted naturally. This is progressive summarization implemented as deterministic bookkeeping.
 
+## Known Issues (from current Valence KB)
+
+### Single-Inference Beliefs Propagate as Truth
+Problem: One conversation infers "Chris doesn't like frameworks" and it carries forward across sessions as established philosophy. Beliefs from single interactions get stored with high confidence.
+
+**Root cause**: No corroboration tracking after initial creation. The 6D confidence model has a corroboration dimension but it's never updated.
+
+**Solution needed**: 
+- Beliefs from single interactions should start at LOW confidence (0.3-0.5)
+- Confidence increases only through independent corroboration (3+ sessions observing same pattern)
+- Same user saying it twice in one session ≠ corroboration
+- Different sessions = corroboration
+
+### No Automatic Deduplication
+Problem: beliefs table has content_hash column but never checks it for uniqueness. Similar beliefs across sessions accumulate as duplicates rather than reinforcing confidence.
+
+**Solution needed**: 
+- Exact content_hash check on belief_create (fast, catches exact dupes)
+- Embedding similarity > 0.90 check for fuzzy matches
+- On match: increment corroboration count + escalate confidence instead of creating duplicate
+
+### Corroboration Dimension Never Updates
+The confidence model has `corroboration` as a dimension but it's set once at creation and never updated as beliefs are independently confirmed.
+
+**Solution needed**: 
+- Track corroboration count (how many independent sessions contributed)
+- Track source diversity (same user ≠ diverse, different sessions = diverse)
+- Auto-update corroboration dimension when similar beliefs arrive from independent sources
+
 ## Open Questions
 
 - What triggers demotion? (Confidence drops below threshold? Contradicted by newer evidence?)
 - How do we handle data sources that need immediate processing? (e.g., urgent messages)
 - Should L4 synthesis be agent-driven only, or can the engine infer insights autonomously?
 - What's the storage cost model? (L0 should be nearly free, L3 can be more expensive)
+- What's the minimum corroboration count before confidence escalates? (3 sessions? 5?)
+- How long is the window for "independent" sessions? (Same day = not independent? Different weeks = independent?)

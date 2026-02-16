@@ -20,7 +20,16 @@ All concept documents, their status, and confidence.
 | federation | exploring | 0.70 | concepts/federation.md |
 | knowledge-lifecycle | settled | 0.90 | concepts/knowledge-lifecycle.md |
 | decay-model | exploring | 0.70 | concepts/decay-model.md |
-| bounded-memory | exploring | 0.80 | concepts/bounded-memory.md |
+| cold-warm-split | settled | 0.95 | concepts/cold-warm-split.md |
+| inference-training-loop | settled | 0.95 | concepts/inference-training-loop.md |
+| bounded-memory | exploring | 0.85 | concepts/bounded-memory.md |
+| graceful-degradation | settled | 0.90 | concepts/graceful-degradation.md |
+| value-per-token | settled | 0.95 | concepts/value-per-token.md |
+| triples-atomic | settled | 0.95 | concepts/triples-atomic.md |
+| three-layer-architecture | settled | 0.95 | concepts/three-layer-architecture.md |
+| topology-embeddings | settled | 0.95 | concepts/topology-embeddings.md |
+| graph-vector-duality | settled | 0.95 | concepts/graph-vector-duality.md |
+| knowledge-loop | settled | 0.95 | concepts/knowledge-loop.md |
 | deterministic-core | exploring | 0.85 | concepts/deterministic-core.md |
 | emergent-dimensions | exploring | 0.75 | concepts/emergent-dimensions.md |
 | curation | exploring | 0.75 | concepts/curation.md |

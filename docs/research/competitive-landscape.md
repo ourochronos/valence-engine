@@ -44,7 +44,32 @@
 7. Zero-dependency embedded deployment with built-in embeddings
 
 ## Key Academic Work
-- "Graph-based Agent Memory: Taxonomy, Techniques, and Applications" (arxiv 2602.05665, Feb 2026)
-- "Memory in the Age of AI Agents" (arxiv 2512.13564, Jan 2026)
-- Proper Epistemic Knowledge Bases (AAAI 2016) — nested multi-agent belief representation
-- ICLR 2026 MemAgents Workshop — principled memory substrate for agents
+
+### Graph-based Agent Memory (arxiv 2602.05665, Feb 2026)
+Survey paper identifying the frontier: graph memory transitioning from passive log to structured topological model of experience.
+
+**Key structures identified**:
+- Knowledge graph (facts/relationships)
+- Hierarchical (nested contexts)
+- Temporal graph (time-aware)
+- Hypergraph (n-ary relationships)
+- Hybrid architectures (combining multiple)
+
+**Memory lifecycle**: extraction → storage → retrieval → evolution
+
+**Evolution mechanisms**:
+- Consolidation (merging similar memories)
+- Graph reasoning (inference over structure)
+- Reorganization (structure updates based on use)
+
+**Critical insight: Knowledge-Experience Decoupling**  
+Separating factual knowledge from experiential memory in hybrid graph architectures. This validates Valence's belief/session separation and adds the temporal graph and hypergraph dimensions we're missing.
+
+### Memory in the Age of AI Agents (arxiv 2512.13564, Jan 2026)
+Comprehensive survey of agent memory systems. Benchmark results show agents with memory use 12× fewer tokens and complete requests 3× faster than agents without memory.
+
+### Proper Epistemic Knowledge Bases (AAAI 2016)
+Formal foundation for nested multi-agent belief representation: "Agent A believes that Agent B knows X." This is the theoretical basis for federation with nested epistemic states.
+
+### ICLR 2026 MemAgents Workshop
+Workshop focused on principled memory substrates for agents. Key theme: moving from ad-hoc memory solutions to formally grounded architectures.

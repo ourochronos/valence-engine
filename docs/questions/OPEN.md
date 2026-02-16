@@ -99,3 +99,143 @@ With no usage history, everything has equal priority. What breaks the symmetry? 
 ### Q21: Emergent dimension naming
 **Affects**: [emergent-dimensions]  
 Structural dimensions are unnamed. Does naming them via inference change behavior? Does a label make a dimension "stickier" or bias retrieval toward it?
+
+## Belief Lifecycle & Confidence
+
+### Q22: How do we prevent single-inference beliefs from propagating as truth?
+**Affects**: [epistemics-native], [knowledge-lifecycle]  
+KB shows this is a real problem: one conversation infers "Chris doesn't like frameworks" and it carries forward as established truth. Beliefs from single interactions should have LOW confidence. Confidence should only increase through independent corroboration (multiple sessions observing the same pattern). The 6D confidence model has a corroboration dimension but it's never updated after creation.
+
+### Q23: What counts as independent corroboration?
+**Affects**: [epistemics-native], [knowledge-lifecycle]  
+Same user saying it twice in one session ≠ corroboration. Same pattern observed across 3+ independent sessions = corroboration. How do we track session independence? How do we prevent gaming?
+
+### Q24: Belief deduplication strategy?
+**Affects**: [knowledge-lifecycle], [bounded-memory]  
+Current Valence has content_hash but never checks it for uniqueness. Options: (1) Exact hash check on create (fast, catches exact dupes), (2) Embedding similarity check before create (slow, catches fuzzy matches), (3) Periodic batch consolidation. On match, bump confidence + add corroboration instead of creating duplicate.
+
+## Cold/Warm Split
+
+### Q25: Minimum viable cold engine?
+**Affects**: [cold-warm-split], [rust-engine]  
+What's the smallest feature set we can ship without any warm features? Insert, retrieve, decay, evict? Or do we need basic synthesis?
+
+### Q26: Warm operations user-configurable?
+**Affects**: [cold-warm-split], [value-per-token]  
+Should users be able to disable synthesis to save costs? Run labeling only on weekends? How granular should control be?
+
+### Q27: Can warm operations be batched/deferred?
+**Affects**: [cold-warm-split], [lazy-compute]  
+Run synthesis overnight when LLM calls are cheap? Or does deferring break the feedback loop?
+
+## Bounded Memory
+
+### Q28: Right boundary sizes?
+**Affects**: [bounded-memory]  
+10K beliefs feels reasonable for personal use. What about teams? Enterprises? Should boundaries scale with available resources?
+
+### Q29: Eviction communication?
+**Affects**: [bounded-memory], [privacy-sovereignty]  
+Do we tell users "You're at 92% capacity"? Suggest archiving? Auto-archive with notification? Silent eviction?
+
+### Q30: Can archived beliefs be searched?
+**Affects**: [bounded-memory], [knowledge-lifecycle]  
+Are they truly offline, or do they stay in a "cold storage" tier that's searchable but slow?
+
+## Value Metrics
+
+### Q31: How do we measure "useful actions" objectively?
+**Affects**: [value-per-token]  
+Questions answered correctly, decisions supported by evidence, knowledge gaps filled, patterns detected — how do we track these automatically?
+
+### Q32: Should users see value/token metrics?
+**Affects**: [value-per-token]  
+"This session: 0.73 useful actions per 1K tokens" — helpful feedback or confusing noise?
+
+## Triples & Three-Layer Architecture (NEW - Feb 15, 2026)
+
+### Q33: Triple granularity?
+**Affects**: [triples-atomic], [three-layer-architecture]  
+How atomic should triples be? Single assertion per triple, or can objects be complex structures? `(Chris, prefers, composable_architectures)` vs `(Chris, prefers, {type: architecture, property: composable})`?
+
+### Q34: Temporal validity at which layer?
+**Affects**: [triples-atomic], [three-layer-architecture]  
+Do triples have temporal bounds, or only sources? Is `(Chris, prefers, X)` timeless with time-bounded sources, or is the triple itself temporal?
+
+### Q35: Migration path from beliefs to triples?
+**Affects**: [triples-atomic], [three-layer-architecture]  
+Current Valence has ~800 beliefs. How do we decompose them into triples without losing information? Automated extraction, manual review, hybrid?
+
+### Q36: Triple serialization for LLM context?
+**Affects**: [triples-atomic], [context-assembly]  
+How do we present triples to the LLM without overwhelming context? Show raw triples, always use summaries, or adaptive based on query type?
+
+### Q37: Summary regeneration triggers?
+**Affects**: [three-layer-architecture]  
+When do we regenerate summaries? On every triple update (expensive), on retrieval (lazy), on schedule (batch), or never (summaries are permanent)?
+
+## Topology Embeddings (NEW - Feb 15, 2026)
+
+### Q38: Which topology method for which graphs?
+**Affects**: [topology-embeddings], [graph-vector-duality]  
+Spectral for dense graphs? Random walks for sparse? Message passing for feature-rich? Can we auto-select based on graph properties?
+
+### Q39: Dynamic graph embedding updates?
+**Affects**: [topology-embeddings], [lazy-compute]  
+Recompute all embeddings on every triple insert (expensive), incremental updates (complex), or batch recompute (lazy but stale)?
+
+### Q40: Minimum graph density threshold?
+**Affects**: [topology-embeddings], [knowledge-loop]  
+How many triples/edges before topology embeddings are "good enough"? 100 nodes? 1000? Can we measure embedding quality to auto-transition?
+
+### Q41: Blend weights for hybrid embeddings?
+**Affects**: [topology-embeddings], [knowledge-loop]  
+During bootstrap phase, how do we blend LLM + topology embeddings? Fixed weights, adaptive based on graph density, learned from retrieval quality?
+
+### Q42: Topology method as user choice or auto?
+**Affects**: [topology-embeddings]  
+Expose embedding method as configuration, or auto-select based on graph characteristics? Spectral vs DeepWalk vs message passing — user decision or engine decision?
+
+## Graph-Vector Duality & Knowledge Loop (NEW - Feb 15, 2026)
+
+### Q43: Vector-graph blend tuning?
+**Affects**: [graph-vector-duality], [multi-dim-fusion]  
+How do we balance vector search (broad) vs graph traversal (precise) in retrieval? Context-dependent weights, user preference, learned from feedback?
+
+### Q44: Should vectors override graph?
+**Affects**: [graph-vector-duality]  
+If embeddings suggest two nodes are similar but no graph edge exists, should we create a candidate edge, ignore the signal, or surface as tension?
+
+### Q45: Loop phase transition detection?
+**Affects**: [knowledge-loop]  
+How do we know when to transition from LLM embeddings to topology embeddings? Graph density metric, embedding quality metric, manual threshold?
+
+### Q46: Domain-specific loop tuning?
+**Affects**: [knowledge-loop]  
+Sparse but highly structured graphs (ontologies, taxonomies) vs dense but shallow graphs (conversation logs) — same loop parameters or different?
+
+### Q47: Can the loop be federated?
+**Affects**: [knowledge-loop], [federation]  
+Can usage patterns from Node A influence Node B's graph structure or embedding strategy? Or does each node run its own isolated loop?
+
+## Hygiene & Consolidation (NEW - Feb 15, 2026)
+
+### Q48: Automatic triple deduplication threshold?
+**Affects**: [triples-atomic], [three-layer-architecture]  
+Exact content hash match = definite duplicate. But what similarity threshold for fuzzy matches? 0.90 embedding similarity? 0.95? Configurable?
+
+### Q49: Source independence criteria?
+**Affects**: [three-layer-architecture], [epistemics-native]  
+What counts as "independent corroboration"? Different session = independent? Different day? Different context? How do we prevent gaming?
+
+### Q50: Confidence aggregation from sources?
+**Affects**: [three-layer-architecture], [epistemics-native]  
+If a triple has 5 sources with confidences [0.6, 0.7, 0.8, 0.6, 0.9], what's the aggregate? Mean? Weighted by source reliability? Median? Max?
+
+### Q51: Summary scope determination?
+**Affects**: [three-layer-architecture]  
+How do we decide what triples to cluster into a summary? Per-entity (all facts about Chris)? Per-topic (all architecture preferences)? Per-session? Emergent clusters?
+
+### Q52: Provenance depth in summaries?
+**Affects**: [three-layer-architecture]  
+When returning a summary, how much source detail to include? Just count ("5 sources")? Timestamps of observations? Full session links? Configurable by query?
