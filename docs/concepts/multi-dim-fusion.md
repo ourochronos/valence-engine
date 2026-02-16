@@ -10,12 +10,14 @@ A single query simultaneously searches across multiple dimensions — semantic s
 
 ## Dimensions
 
-1. **Semantic**: Vector similarity between query embedding and belief embeddings
+1. **Semantic**: Vector similarity between query embedding and belief/triple embeddings
 2. **Graph**: Traversal distance and relationship type from active entities
-3. **Confidence**: Higher-confidence beliefs rank higher (but aren't just filtered)
-4. **Temporal**: Superseded beliefs deprioritized; recent beliefs get recency boost
-5. **Corroboration**: Independently verified beliefs get ranking lift
+3. **Confidence**: Computed dynamically from topology (see [emergent-dimensions]) — source reliability, corroboration paths, consistency, domain centrality
+4. **Temporal**: Superseded beliefs deprioritized; recent observations get recency boost (edge decay)
+5. **Corroboration**: Number of independent reasoning paths to the triple (computed from source topology)
 6. **Tension**: Contradicted beliefs surfaced *with* the contradiction, not hidden
+
+**Note**: Dimensions 3-5 are NOT stored metadata — they are computed at query time from graph structure. This makes them contextual: the same triple can score differently in different query contexts.
 
 ## Lineage
 
@@ -34,13 +36,15 @@ Separate queries + merge = O(n * dimensions) with post-hoc score normalization t
 
 Weighted combination with configurable weights:
 ```
-score = w_semantic * semantic_sim(query, belief)
-      + w_graph * graph_proximity(active_entities, belief)
-      + w_confidence * belief.confidence
-      + w_recency * recency_decay(belief.timestamp)
-      + w_corroboration * corroboration_boost(belief)
-      - w_tension * tension_penalty(belief)  // or: surface with tension flag
+score = w_semantic * semantic_sim(query, triple)
+      + w_graph * graph_proximity(active_entities, triple)
+      + w_confidence * compute_confidence(triple, query_context)  // dynamic
+      + w_recency * recency_decay(sources)  // from source timestamps
+      + w_corroboration * count_independent_paths(triple)  // topology
+      - w_tension * tension_penalty(triple)  // or: surface with tension flag
 ```
+
+**Key insight**: `compute_confidence()` is NOT a lookup — it's a computation over the local graph topology in the context of the current query. Source reliability, corroboration, internal consistency, domain applicability — all computed fresh.
 
 Weights can be context-dependent. A "verify this fact" query might weight confidence and corroboration higher. An "explore this topic" query might weight semantic similarity and graph breadth higher.
 
