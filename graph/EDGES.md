@@ -159,6 +159,69 @@ graph-vector-duality ←→ federation            (shares triples not vectors)
 knowledge-loop ←→ value-per-token             (maximizes via loop)
 ```
 
+## PostgreSQL + Rust Architecture Cluster (NEW - Feb 15, 2026)
+```
+postgres-rust-architecture ←→ rust-engine             (implements)
+postgres-rust-architecture ←→ triples-atomic          (stores)
+postgres-rust-architecture ←→ topology-embeddings     (computes in Rust)
+postgres-rust-architecture ←→ graph-vector-duality    (Rust holds both)
+postgres-rust-architecture ←→ deterministic-core      (Rust is compute)
+```
+
+## Budget-Bounded Operations Cluster (NEW - Feb 15, 2026)
+```
+budget-bounded-ops ←→ lazy-compute                    (extreme laziness)
+budget-bounded-ops ←→ value-per-token                 (forces value maximization)
+budget-bounded-ops ←→ graceful-degradation            (enables via budgets)
+budget-bounded-ops ←→ context-assembly                (primary application)
+budget-bounded-ops ←→ multi-dim-fusion                (bounded fusion queries)
+```
+
+## Self-Training Boundary Cluster (NEW - Feb 15, 2026)
+```
+self-training-boundary ←→ knowledge-loop              (part of loop)
+self-training-boundary ←→ cold-warm-split             (LLM at boundary)
+self-training-boundary ←→ inference-training-loop     (boundary trains itself)
+self-training-boundary ←→ graceful-degradation        (local model enables offline)
+self-training-boundary ←→ self-closing-loops          (Loop 3)
+```
+
+## Engine + Network Product Cluster (NEW - Feb 15, 2026)
+```
+engine-network-product ←→ federation                  (network layer)
+engine-network-product ←→ rust-engine                 (engine is embeddable)
+engine-network-product ←→ privacy-sovereignty         (preserved in both)
+engine-network-product ←→ epistemics-native           (both layers are epistemic)
+engine-network-product ←→ network-flows               (what flows through network)
+```
+
+## Network Flows Cluster (NEW - Feb 15, 2026)
+```
+network-flows ←→ engine-network-product               (content of network)
+network-flows ←→ federation                           (how flows happen)
+network-flows ←→ self-training-boundary               (models/data flow)
+network-flows ←→ knowledge-loop                       (loop extends to network)
+network-flows ←→ triples-atomic                       (triples are what flows)
+```
+
+## Emergence Through Composition Cluster (NEW - Feb 15, 2026)
+```
+emergence-composition ←→ stigmergy                    (same philosophy)
+emergence-composition ←→ emergent-ontology            (ontology emerges)
+emergence-composition ←→ inference-training-loop      (emergence through use)
+emergence-composition ←→ engine-network-product       (network emergence)
+emergence-composition ←→ self-closing-loops           (loops emerge)
+```
+
+## Self-Closing Loops Cluster (NEW - Feb 15, 2026)
+```
+self-closing-loops ←→ knowledge-loop                  (Loop 1: graph→vectors)
+self-closing-loops ←→ topology-embeddings             (generates embeddings)
+self-closing-loops ←→ stigmergy                       (Loop 2: usage→structure)
+self-closing-loops ←→ self-training-boundary          (Loop 3: system→boundary)
+self-closing-loops ←→ inference-training-loop         (self-improvement pattern)
+```
+
 ## Key Insight Edges
 ```
 stigmergy + progressive-summarization = "structure emerges from use"
@@ -177,4 +240,11 @@ three-layer-architecture = "triples → sources → summaries (not three tables,
 topology-embeddings = "vectors from graph structure alone, no external model"
 graph-vector-duality = "two projections of one system"
 knowledge-loop = "LLM builds graph → topology generates embeddings → retrieval feeds LLM"
+postgres-rust-architecture = "PostgreSQL is persistence, Rust is compute"
+budget-bounded-ops = "good-enough beats perfect when read boundary is fuzzy"
+self-training-boundary = "LLM generates training data for its own replacement"
+engine-network-product = "engine is the brain, Valence is the nervous system"
+network-flows = "everything that decomposes to triples flows through network"
+emergence-composition = "vision emerges through iteration, not specification"
+self-closing-loops = "scaffolding that trains its own replacement"
 ```

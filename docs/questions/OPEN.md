@@ -4,13 +4,13 @@ Tracked questions that need resolution. Each links to the concept(s) it affects.
 
 ## Architecture
 
-### Q1: Simple-first or paradigm-shift-first?
+### ~~Q1: Simple-first or paradigm-shift-first?~~ ✅ RESOLVED (Feb 15, 2026)
 **Affects**: [rust-engine]  
-Months of Rust work vs Python/TS prototype that proves context assembly. Could prototype the assembly logic in the current plugin, then port.
+**Decision**: Paradigm-shift-first. Build Rust + PostgreSQL sidecar architecture directly. The vision is clear enough to build confidently.
 
-### Q2: Graph storage approach?
-**Affects**: [rust-engine], [emergent-ontology]  
-Purpose-built adjacency structures, petgraph, or lean on an existing embedded graph (Kuzu, CozoDB)? Chris said no Neo4j ever. Considering Rust sidecar.
+### ~~Q2: Graph storage approach?~~ ✅ RESOLVED (Feb 15, 2026)
+**Affects**: [rust-engine], [emergent-ontology], [postgres-rust-architecture]  
+**Decision**: PostgreSQL for durable triple store (SPO/POS/OSP indexes), Rust sidecar with petgraph for in-memory compute. Split: Postgres = persistence, Rust = compute.
 
 ### Q3: Embedded model distribution?
 **Affects**: [rust-engine], [lazy-compute]  
@@ -265,3 +265,123 @@ When computing domain applicability (centrality within query-relevant subgraph),
 ### Q58: Should confidence dimensions be named at all?
 **Affects**: [emergent-dimensions]  
 If dimensions are purely topological, should we even label them (source reliability, corroboration, etc.) or treat them as unnamed axes? Does naming bias how they're used?
+
+## PostgreSQL + Rust Sidecar Architecture (NEW - Feb 15, 2026)
+
+### Q59: Sync protocol frequency?
+**Affects**: [postgres-rust-architecture]  
+Real-time sync (every insert), batched (every second), pull-on-query? Trade-off: consistency vs overhead.
+
+### Q60: Embedding cache in Postgres?
+**Affects**: [postgres-rust-architecture], [topology-embeddings]  
+Should Rust cache computed topology embeddings in a Postgres table to speed startup? Or always recompute?
+
+### Q61: Multiple Rust sidecars per Postgres?
+**Affects**: [postgres-rust-architecture]  
+Can we run multiple Rust sidecars against one Postgres instance for scale/redundancy? How do they coordinate?
+
+### Q62: Memory budget for in-memory graph?
+**Affects**: [postgres-rust-architecture], [bounded-memory]  
+How much RAM can we assume? 1GB? 8GB? Should it be user-configurable with graceful degradation if exceeded?
+
+## Budget-Bounded Operations (NEW - Feb 15, 2026)
+
+### Q63: Default budget values per domain?
+**Affects**: [budget-bounded-ops]  
+Should different knowledge domains have different default budgets? Technical queries = more hops? Casual = fewer?
+
+### Q64: Communicating partial results?
+**Affects**: [budget-bounded-ops], [context-assembly]  
+Do we tell users "Found 30 results in 50ms, stopped early"? Or silent? How do we indicate quality vs speed trade-off?
+
+### Q65: Auto-tuning budgets from feedback?
+**Affects**: [budget-bounded-ops], [inference-training-loop]  
+Can we measure query quality (did user engage with results?) and auto-adjust budgets? Learn optimal budget per user/domain?
+
+### Q66: Distributed budgets in federation?
+**Affects**: [budget-bounded-ops], [federation]  
+Multi-node queries need distributed budgets. How do we split budget across nodes? Fixed allocation vs dynamic?
+
+## Self-Training Boundary (NEW - Feb 15, 2026)
+
+### Q67: Minimum training data size?
+**Affects**: [self-training-boundary]  
+How many training pairs before fine-tuning is worthwhile? 1000? 5000? Domain-dependent?
+
+### Q68: Which base model for boundary?
+**Affects**: [self-training-boundary]  
+Phi-3, Llama 3.2 1B, Qwen 2.5 1.5B, Mistral? Benchmark on decomposition task to decide?
+
+### Q69: LoRA vs full fine-tuning?
+**Affects**: [self-training-boundary]  
+LoRA is faster and uses less memory. Full fine-tuning is more flexible. Which for boundary models?
+
+### Q70: Sharing trained boundary models?
+**Affects**: [self-training-boundary], [network-flows]  
+Can we share trained models across users/engines? Privacy implications (models may encode training data).
+
+### Q71: Separate models for decomposition vs recomposition?
+**Affects**: [self-training-boundary]  
+Should NL→triples and triples→NL use the same model or two specialized models? Task symmetry vs model efficiency.
+
+## Engine + Network Product Vision (NEW - Feb 15, 2026)
+
+### Q72: Engine-first or engine+network together?
+**Affects**: [engine-network-product]  
+Ship embeddable engine first, add network later? Or build both in parallel? Engine-first reduces scope, proves local value.
+
+### Q73: Minimum viable federation protocol?
+**Affects**: [engine-network-product], [federation]  
+What's the smallest useful protocol? DID exchange + triple sync + corroboration? Or can we start even simpler?
+
+### Q74: Spam/attack prevention on network?
+**Affects**: [engine-network-product], [network-flows]  
+How do we prevent spam, poisoning attacks, reputation gaming? Reputation + stake? Rate limiting? Proof-of-work?
+
+### Q75: P2P infrastructure requirements?
+**Affects**: [engine-network-product], [federation]  
+Fully p2p (DHT for discovery, hole-punching for NAT)? Or some infrastructure (relays, discovery servers)? Tradeoff: purity vs practicality.
+
+### Q76: Reference network or protocol only?
+**Affects**: [engine-network-product]  
+Should we operate a reference Valence network, or just publish the protocol and let networks emerge organically?
+
+## Network Flows (NEW - Feb 15, 2026)
+
+### Q77: Model sharing: weights, training data, or both?
+**Affects**: [network-flows], [self-training-boundary]  
+Sharing weights is convenient but large. Sharing training data is smaller but requires recipient to train. Both?
+
+### Q78: Training data anonymization?
+**Affects**: [network-flows]  
+Should training pairs be anonymized before sharing (remove identifying entities)? Or rely on consent-gating alone?
+
+### Q79: Conflicting domain models?
+**Affects**: [network-flows]  
+Two nodes share medical boundary models with different accuracies. Which does recipient use? Blend? Choose higher accuracy?
+
+### Q80: Paid access to network resources?
+**Affects**: [network-flows], [engine-network-product]  
+Should the protocol support paid access (Engine A charges for high-quality model/compute)? Or reputation-only?
+
+### Q81: Trustless compute delegation?
+**Affects**: [network-flows]  
+Can we use ZK proofs for verifiable computation (delegate embedding compute, verify correctness without trust)?
+
+## Emergence & Loops (NEW - Feb 15, 2026)
+
+### Q82: When to refactor vs build new?
+**Affects**: [emergence-composition]  
+How much technical debt is acceptable before refactoring? Balance between iteration speed and code quality.
+
+### Q83: Loop maturity detection?
+**Affects**: [self-closing-loops]  
+Can we auto-detect when each loop is mature enough to transition phases? Metrics for "graph is dense enough", "model is accurate enough"?
+
+### Q84: Loop transition: automatic or manual?
+**Affects**: [self-closing-loops]  
+Should phase transitions (LLM→local model, external→topology embeddings) be automatic or user-controlled?
+
+### Q85: Federated loop behaviors?
+**Affects**: [self-closing-loops], [network-flows]  
+How do the three loops behave in federated settings? Does shared training data accelerate Loop 3? Does network structure improve Loop 1 embeddings?

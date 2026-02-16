@@ -34,6 +34,13 @@ All concept documents, their status, and confidence.
 | emergent-dimensions | settled | 0.90 | concepts/emergent-dimensions.md |
 | curation | exploring | 0.75 | concepts/curation.md |
 | merge-model | exploring | 0.80 | concepts/merge-model.md |
+| postgres-rust-architecture | settled | 0.95 | concepts/postgres-rust-architecture.md |
+| budget-bounded-ops | settled | 0.90 | concepts/budget-bounded-ops.md |
+| self-training-boundary | settled | 0.95 | concepts/self-training-boundary.md |
+| engine-network-product | settled | 0.95 | concepts/engine-network-product.md |
+| network-flows | settled | 0.90 | concepts/network-flows.md |
+| emergence-composition | settled | 0.95 | concepts/emergence-composition.md |
+| self-closing-loops | settled | 0.95 | concepts/self-closing-loops.md |
 
 ## Status Key
 
