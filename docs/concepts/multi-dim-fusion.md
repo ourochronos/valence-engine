@@ -2,7 +2,7 @@
 
 **Status**: settled  
 **Confidence**: 0.90  
-**Connections**: [context-assembly], [knowledge-graph], [epistemics-native], [rust-engine]
+**Connections**: [context-assembly], [knowledge-graph], [epistemics-native], [rust-engine], [emergent-dimensions]
 
 ## Idea
 
@@ -43,6 +43,10 @@ score = w_semantic * semantic_sim(query, belief)
 ```
 
 Weights can be context-dependent. A "verify this fact" query might weight confidence and corroboration higher. An "explore this topic" query might weight semantic similarity and graph breadth higher.
+
+## Emergent Dimensions
+
+The dimensions listed above (semantic, graph, confidence, temporal, corroboration, tension) are predefined starting points. [emergent-dimensions] extends this: the dimensions themselves are emergent, not just the fusion across them. As usage patterns create new structural axes, the scoring function adapts — new dimensions appear, unused dimensions fade. The dimensional space is the shape of what the user has cared about.
 
 ## Open Questions
 

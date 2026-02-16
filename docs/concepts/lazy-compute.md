@@ -2,7 +2,7 @@
 
 **Status**: settled  
 **Confidence**: 0.90  
-**Connections**: [progressive-summarization], [stigmergy], [knowledge-lifecycle]
+**Connections**: [progressive-summarization], [stigmergy], [knowledge-lifecycle], [deterministic-core], [merge-model]
 
 ## Idea
 
@@ -28,6 +28,10 @@ The ratio of ingested data to useful data is typically 100:1 or higher. Processi
 ## Implication for System Resources
 
 A valence-engine instance can ingest massive volumes (emails, messages, documents, code diffs) without compute pressure. The CPU/memory cost is determined by *query volume*, not ingestion volume. This is how it runs on normal systems.
+
+## Alignment with Deterministic Core
+
+Lazy compute + [deterministic-core] = the engine only spends compute where use has demonstrated value, and that compute is deterministic bookkeeping (clustering, linking, eviction scoring), not inference. The [merge-model] is lazy by nature: clusters form from co-retrieval patterns, not from proactive analysis. Expensive inference (synthesis, labeling) only happens in the warm engine layer and only when the agent explicitly engages.
 
 ## Open Questions
 

@@ -2,7 +2,7 @@
 
 **Status**: exploring  
 **Confidence**: 0.80  
-**Connections**: [context-assembly], [intent-capture], [knowledge-lifecycle], [stigmergy]
+**Connections**: [context-assembly], [intent-capture], [knowledge-lifecycle], [stigmergy], [curation]
 
 ## Idea
 
@@ -53,6 +53,10 @@ LLM-facing tools collapse from 56 to ~3-5:
 - **connect** — explicit graph creation ("these are related")
 
 Everything else (create, supersede, archive, tension management) becomes engine internals driven by use patterns.
+
+## Curation as Tool Mediation
+
+LLM-facing [curation] tools (correct, enrich, link, pin, surface) are a form of explicit tool mediation. The agent doesn't just passively consume knowledge — it actively curates the knowledge substrate. This complements the organic stigmergic mechanisms with deliberate correction and enrichment, mediated through the same tool interface.
 
 ## Open Questions
 

@@ -20,6 +20,11 @@ All concept documents, their status, and confidence.
 | federation | exploring | 0.70 | concepts/federation.md |
 | knowledge-lifecycle | settled | 0.90 | concepts/knowledge-lifecycle.md |
 | decay-model | exploring | 0.70 | concepts/decay-model.md |
+| bounded-memory | exploring | 0.80 | concepts/bounded-memory.md |
+| deterministic-core | exploring | 0.85 | concepts/deterministic-core.md |
+| emergent-dimensions | exploring | 0.75 | concepts/emergent-dimensions.md |
+| curation | exploring | 0.75 | concepts/curation.md |
+| merge-model | exploring | 0.80 | concepts/merge-model.md |
 
 ## Status Key
 

@@ -69,3 +69,33 @@ Can you "unshare" a belief? The receiving node already has it. Revocation = remo
 ### Q14: L0 query performance at scale?
 **Affects**: [lazy-compute], [knowledge-lifecycle]  
 When a query touches large volumes of L0 data, how do we avoid scanning everything? Cheap indexes on L0?
+
+## Bounded Memory & New Architecture
+
+### Q15: What's the right LRU boundary size?
+**Affects**: [bounded-memory]  
+10K nodes? Adaptive based on available storage? Per-domain budgets? The boundary is the single most impactful configuration parameter.
+
+### Q16: Cluster representative selection
+**Affects**: [merge-model]  
+Most-retrieved member, or most-connected? Does inference-generated synthesis become the representative? What happens when the current representative gets superseded?
+
+### Q17: Eviction of linked nodes
+**Affects**: [bounded-memory], [merge-model]  
+If a node is scheduled for eviction but has active links to resident nodes, how much protection does that give? Is link-count protection linear, logarithmic, or threshold-based?
+
+### Q18: Pattern-significant storage format
+**Affects**: [curation]  
+What's the minimal statistical fingerprint for noise data (email frequency, sender clusters, timing) that captures patterns without storing content? Histogram? Time series? Count vector?
+
+### Q19: Federation + LRU interaction
+**Affects**: [bounded-memory], [federation]  
+Federated beliefs enter local LRU and compete for residency? Or separate tier? If separate, does that break the bounded guarantee?
+
+### Q20: Cold start symmetry breaking
+**Affects**: [bounded-memory], [deterministic-core]  
+With no usage history, everything has equal priority. What breaks the symmetry? Ingestion order? Source weighting? Explicit seeding?
+
+### Q21: Emergent dimension naming
+**Affects**: [emergent-dimensions]  
+Structural dimensions are unnamed. Does naming them via inference change behavior? Does a label make a dimension "stickier" or bias retrieval toward it?

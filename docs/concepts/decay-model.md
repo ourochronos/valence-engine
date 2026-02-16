@@ -2,7 +2,7 @@
 
 **Status**: exploring  
 **Confidence**: 0.70  
-**Connections**: [context-assembly], [working-set], [knowledge-lifecycle], [stigmergy]
+**Connections**: [context-assembly], [working-set], [knowledge-lifecycle], [stigmergy], [bounded-memory]
 
 ## Idea
 
@@ -43,6 +43,16 @@ Current model: grow context → hit limit → summarize (lossy) → lose detail
 New model: context is assembled fresh each turn → no growth → no compaction needed → no loss
 
 The "decay" is just the natural result of assembly: if it's not relevant to this turn, it's not in the context. It's still in the graph. It can come back.
+
+## Decay + Eviction
+
+Decay and eviction are related but distinct mechanisms:
+- **Decay** is deprioritization within the resident set. A decayed belief still exists — it just surfaces less in fusion queries.
+- **Eviction** (from [bounded-memory]) is the ultimate decay — removal from the LRU when a node's combined score drops low enough relative to the rest of the population.
+
+Decay feeds eviction scores. A heavily decayed node that also has low retrieval frequency and few connections will be among the first evicted when the boundary is hit.
+
+**Explicit pins** protect from both: a pinned node neither decays nor gets evicted, regardless of retrieval patterns. This is the mechanism for "important but infrequently accessed" knowledge (e.g., birthdays, credentials, core values).
 
 ## Open Questions
 

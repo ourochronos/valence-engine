@@ -2,7 +2,7 @@
 
 **Status**: settled  
 **Confidence**: 0.95  
-**Connections**: [progressive-summarization], [emergent-ontology], [lazy-compute], [decay-model]
+**Connections**: [progressive-summarization], [emergent-ontology], [lazy-compute], [decay-model], [deterministic-core], [bounded-memory], [merge-model]
 
 ## Idea
 
@@ -31,6 +31,16 @@ This means the system never needs a batch cleanup job. Maintenance is continuous
 
 Traditional approaches: scheduled maintenance, batch reindexing, explicit curation
 Stigmergic approach: continuous, use-driven, emergent
+
+## Concrete Mechanism: The Deterministic Core
+
+The stigmergic model now has a concrete implementation through [deterministic-core]:
+- **Co-retrieval counting** creates links — when two nodes are pulled together, the engine records the structural association
+- **Retrieval refreshes** nodes — use IS the reinforcement signal, implemented as LRU score updates
+- **LRU eviction** ([bounded-memory]) is the forgetting mechanism — unused traces fade and are eventually removed
+- **Clustering** ([merge-model]) is the consolidation mechanism — frequently co-retrieved nodes merge into cluster nodes
+
+The deterministic core IS stigmergy made concrete. Every operation (refresh, link, decay, evict, cluster) is a deterministic trace-based mechanism. No inference needed.
 
 ## Key Property
 

@@ -2,7 +2,7 @@
 
 **Status**: settled  
 **Confidence**: 0.90  
-**Connections**: [progressive-summarization], [lazy-compute], [stigmergy], [epistemics-native], [decay-model]
+**Connections**: [progressive-summarization], [lazy-compute], [stigmergy], [epistemics-native], [decay-model], [bounded-memory], [merge-model]
 
 ## Idea
 
@@ -54,6 +54,12 @@ Raw data (any source)
 
 Traditional: ingestion → batch process → index → retrieve
 This: ingestion → cheap store → use-driven promotion → organic refinement
+
+## Bounded Lifecycle
+
+The lifecycle is bounded by [bounded-memory]. L0 data that never promotes eventually gets evicted from the LRU. The boundary ensures the lifecycle can't accumulate unbounded L0 — there's a hard cap on total nodes, and unpromoted L0 data is the most likely to be evicted (lowest retrieval frequency, fewest connections).
+
+Merge/clustering ([merge-model]) is how L1-L2 beliefs consolidate without inference. Co-retrieved beliefs cluster together, the most-used member becomes the representative, and individual members that stop being retrieved get evicted naturally. This is progressive summarization implemented as deterministic bookkeeping.
 
 ## Open Questions
 
